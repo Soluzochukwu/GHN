@@ -3,6 +3,7 @@ package com.example.snwak_000.ghn;
 import android.app.DatePickerDialog;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.text.*;
 import java.util.Calendar;
 
 
-public class SignUpActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class SignUpActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener{
 
     int day, month, year, dayFinal, monthFinal, yearFinal;
     String emailFinal, passwordFinal, usernameFinal;
@@ -45,6 +46,8 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
 
             @Override
             public void onClick(View view) {
+                ;
+
                 Calendar c = Calendar.getInstance();
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
@@ -60,6 +63,11 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
      public void rbGroup(View v){
          int radiobutton = gender.getCheckedRadioButtonId();
          RadioButton rb = (RadioButton) findViewById(radiobutton);
+     }
+
+     public void setDate(View view){
+         PickerDialogs pickerDialogs = new PickerDialogs();
+         pickerDialogs.show(getSupportFragmentManager(), "date_picker");
      }
 
     @Override

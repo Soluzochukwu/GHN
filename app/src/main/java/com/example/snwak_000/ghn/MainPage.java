@@ -16,12 +16,14 @@ import android.widget.*;
 public class MainPage extends AppCompatActivity {
 
     private Button createAccount;      //create account button variable
+    private Button login;       //login button variable
 
 
     public void setup(){
         /* assigning varibles to IDs created
          */
         createAccount = (Button)findViewById(R.id.createAccountButton);
+        login = (Button)findViewById(R.id.loginButton);
 
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +32,15 @@ public class MainPage extends AppCompatActivity {
                 startActivity(moveToSignUpPage);
             }
         });
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent moveToLogInPage = new Intent(MainPage.this, LogInActivity.class);
+                startActivity(moveToLogInPage);
+            }
+        });
+
     }
 
     @Override
