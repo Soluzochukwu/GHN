@@ -39,6 +39,8 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
+import com.amazonaws.regions.Regions;
+import com.google.ads.AdRequest;
 //import com.example.snwak_000.CognitoYourUserPoolsDemo.R;
 
 
@@ -65,6 +67,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
     private static int reqCode = 10;
     RadioButton rb; //checked radio button
     AppHelper helper;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,15 +206,27 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
-
          signUp.setOnClickListener(new View.OnClickListener() {
+             private String userPoolId = "us-east-2_65IOW9Ae2";
+
+             private String clientId = "52k1b6j0d510ct01ni043sn982";
+
+             private String clientSecret = "ofckr0t3l69qcld2sp3upus2sgi01oivgc7jc7lmf7or1k4nh6f";
+
+             private Regions cognitoRegion = Regions.US_EAST_2;
+
+
+
              @Override
              public void onClick(View view) {
                  // Read user data and register
+
                  CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+                 CognitoUserPool userPool = new CognitoUserPool(getApplicationContext(), userPoolId, clientId, clientSecret, cognitoRegion);
+
 
                  usernameInput = username.getText().toString();
-                 if (usernameInput == null || usernameInput.isEmpty()) {
+                 if (usernameInput.isEmpty()) {
                      errorMessage.setText("Enter a valid username");
                      username.setBackground(getDrawable(R.drawable.text_border_error));
                      return;
@@ -230,7 +245,8 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                      errorMessage.setText("Enter a valid email");
                      email.setBackground(getDrawable(R.drawable.text_border_error));
                      return;
-                 }else{
+                 }else {
+                     //userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get(email.getHint()).toString(), userInput);
                      userAttributes.addAttribute(email.getHint().toString(), userInput);
                  }
 //                 if (userInput != null) {
@@ -245,23 +261,18 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
 //                     return;
 //                 }
 
-                 userInput = dob.getText().toString();
+                 String dobFinal = "" + yearFinal + monthFinal + dayFinal;
+                 userInput = dobFinal;
+                 //userInput = dob.getText().toString();
                  if(userInput == null || userInput.isEmpty()){
                      errorMessage.setText("Enter valid date of birth");
                      dob.setBackground(getDrawable(R.drawable.text_border_error));
                      return;
                  }else{
                      userAttributes.addAttribute(dob.getHint().toString(), userInput);
+                     //userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get(dob.getHint()).toString(), userInput);
                  }
-//                 if (dob != null){
-//                     //userAttributes.addAttribute(dob.getHint().toString(), userInput);
-//
-////                     userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get(dob.getHint()).toString(), userInput);
-//                 }else{
-//                     errorMessage.setText("Enter valid date of birth");
-//                     dob.setBackground(getDrawable(R.drawable.text_border_error));
-//                     return;
-//                 }
+
 
                  if(genderChecked == false){
                      errorMessage.setText("Select gender");
@@ -269,32 +280,30 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                      return;
                  }else {
                      if (genderFinal.equalsIgnoreCase(male.getText().toString())) {
-                         //userInput = "male";
-                         userAttributes.addAttribute(genderFinal, male.getText().toString());
-                         //                     userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get(male.getText()).toString(), userInput);
+                         userInput = "male";
+                         userAttributes.addAttribute("gender", userInput);
+                         //userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get(male.getText()).toString(), userInput);
                      } else {
                          userInput = "female";
-                         userAttributes.addAttribute(genderFinal, female.getText().toString());
-                         //                     userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get(female.getText()).toString(), userInput);
+                         userAttributes.addAttribute("gender", userInput);
+                         //userAttributes.addAttribute(AppHelper.getSignUpFieldsC2O().get("Gender").toString(), userInput);
                      }
                  }
 
                  showWaitDialog();
+                 userPool.signUp(usernameInput,passwordInput,userAttributes, null, signUpHandler);
                  //next();
-
-
-
 
                  //AppHelper.getPool().signUpInBackground(usernameInput, passwordInput, userAttributes, null, signUpHandler);
                  //helper.getPool().signUpInBackground(usernameInput, passwordInput, userAttributes, null, signUpHandler);
-                 helper.getPool().signUpInBackground(usernameInput, passwordInput, userAttributes, null, signUpHandler);
-
+                 //helper.getPool().signUpInBackground(usernameInput, passwordInput, userAttributes, null, signUpHandler);
 
              }
          });
+
     }
 
-     public void next(){
+     public void next(){ //test
          closeWaitDialog();
          Intent intent = new Intent(this, ConfirmSignUp.class);
          startActivity(intent);
@@ -322,12 +331,13 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
              errorMessage.setText("Sign up failed");
              //username.setBackground(getDrawable(R.drawable.text_border_error));
              //showDialogMessage("Sign up failed",AppHelper.formatException(e),false);
-             showDialogMessage("Sign up failed",helper.formatException(e),false);
+             showDialogMessage("Sign up failed",AppHelper.formatException(e),false);
 
          }
     };
 
     private void confirmSignUp(CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+        System.out.println("Worked!!!");
         Intent intent = new Intent(this, ConfirmSignUp.class);
         intent.putExtra("source","signup");
         intent.putExtra("name", usernameInput);
