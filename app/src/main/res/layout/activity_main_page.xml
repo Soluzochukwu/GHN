@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.383" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewFP1"
         android:layout_width="160dp"
         android:layout_height="31dp"
         android:layout_marginBottom="208dp"
@@ -90,7 +90,7 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFP1"
         app:layout_constraintVertical_bias="0.065" />
 
 </android.support.constraint.ConstraintLayout>

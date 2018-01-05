@@ -27,7 +27,12 @@
         <activity
             android:name=".ConfirmSignUp"
             android:label="@string/title_activity_confirm_sign_up"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RegularUserActivity" />
+        <activity android:name=".ForgotPassword" />
+        <activity android:name=".ForgotPassword2" />
+        <activity android:name=".ForgotPassword3" />
+        <activity android:name=".ForgotPassword4" />
     </application>
 
 </manifest>
